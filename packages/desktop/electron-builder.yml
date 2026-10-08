@@ -1,0 +1,174 @@
+npmRebuild: false
+electronLanguages:
+  - ar
+  - en-US
+  - en-GB
+  - es
+  - es-419
+  - fr
+  - ja
+  - ko
+  - pt-BR
+  - pt-PT
+  - ru
+  - zh-CN
+  - zh-TW
+appId: sh.omp.desktop
+productName: OMP Desktop
+executableName: OMP Desktop
+protocols:
+  - name: OMP Desktop agent link
+    schemes:
+      - omp-desktop
+afterPack: ./scripts/after-pack.js
+afterSign: ./scripts/after-sign.js
+publish:
+  provider: github
+  owner: iris-cat-dev
+  repo: omp-desktop
+directories:
+  output: release
+files:
+  - dist/**/*
+  - "!**/*.map"
+  - "!**/*.d.{ts,cts,mts}"
+  - "!**/node_modules/zod/src/**"
+  - "!**/node_modules/openai/src/**"
+  - "!**/node_modules/@modelcontextprotocol/sdk/dist/{esm,cjs}/examples/**"
+  - "!node_modules/@omp-desktop/*/src/**"
+  - "!node_modules/@omp-desktop/**/*.test.*"
+  - "!node_modules/@omp-desktop/**/*.spec.*"
+  - "!node_modules/@omp-desktop/server/dist/server/web-ui/**"
+  - "!node_modules/@vscode/ripgrep*/**"
+  # Workspace packages are symlinked, so anything a dev generates inside them
+  # lands in the asar. CI never has these; a local .debug run adds gigabytes.
+  - "!node_modules/@omp-desktop/*/.debug/**"
+  - "!node_modules/@omp-desktop/*/.tasks/**"
+  - "!node_modules/@omp-desktop/*/conversations/**"
+  - "!node_modules/@omp-desktop/*/test-results/**"
+asarUnpack:
+  - dist/daemon/node-entrypoint-runner.js
+  - node_modules/@omp-desktop/server/dist/server/terminal/shell-integration/**/*
+  - node_modules/@omp-desktop/server/dist/server/server/agent/providers/omp/background-jobs-extension.js
+  - node_modules/@napi-rs/keyring-win32-*/**/*
+extraResources:
+  - from: ../app/dist
+    to: app-dist
+  - from: remote-backend-dist
+    to: remote-backend
+mac:
+  artifactName: "OMP-Desktop-${version}-${arch}.${ext}"
+  category: public.app-category.developer-tools
+  icon: assets/icon-macos.png
+  hardenedRuntime: true
+  notarize: true
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.inherit.plist
+  electronLanguages:
+    [
+      ar,
+      ar_FEMININE,
+      ar_MASCULINE,
+      ar_NEUTER,
+      en,
+      en_FEMININE,
+      en_MASCULINE,
+      en_NEUTER,
+      en_GB,
+      en_GB_FEMININE,
+      en_GB_MASCULINE,
+      en_GB_NEUTER,
+      es,
+      es_FEMININE,
+      es_MASCULINE,
+      es_NEUTER,
+      es_419,
+      es_419_FEMININE,
+      es_419_MASCULINE,
+      es_419_NEUTER,
+      fr,
+      fr_FEMININE,
+      fr_MASCULINE,
+      fr_NEUTER,
+      ja,
+      ja_FEMININE,
+      ja_MASCULINE,
+      ja_NEUTER,
+      ko,
+      ko_FEMININE,
+      ko_MASCULINE,
+      ko_NEUTER,
+      pt_BR,
+      pt_BR_FEMININE,
+      pt_BR_MASCULINE,
+      pt_BR_NEUTER,
+      pt_PT,
+      pt_PT_FEMININE,
+      pt_PT_MASCULINE,
+      pt_PT_NEUTER,
+      ru,
+      ru_FEMININE,
+      ru_MASCULINE,
+      ru_NEUTER,
+      zh_CN,
+      zh_CN_FEMININE,
+      zh_CN_MASCULINE,
+      zh_CN_NEUTER,
+      zh_TW,
+      zh_TW_FEMININE,
+      zh_TW_MASCULINE,
+      zh_TW_NEUTER,
+    ]
+  extraResources:
+    - from: ../../bin/omp-darwin-${arch}
+      to: bin/omp
+    - from: bin/omp-desktop
+      to: bin/omp-desktop
+    - from: assets/icon-macos.png
+      to: icon.png
+    - from: assets/trayTemplate.png
+      to: trayTemplate.png
+    - from: assets/trayTemplate@2x.png
+      to: trayTemplate@2x.png
+  target:
+    - dmg
+    - zip
+linux:
+  category: Development
+  icon: assets
+  artifactName: "OMP-Desktop-${version}-${arch}.${ext}"
+  maintainer: "OMP Desktop contributors"
+  vendor: "OMP Desktop"
+  extraResources:
+    - from: ../../bin/omp-linux-${arch}
+      to: bin/omp
+    - from: bin/omp-desktop
+      to: bin/omp-desktop
+    - from: assets/icon.png
+      to: icon.png
+  target:
+    - AppImage
+    - deb
+    - rpm
+    - tar.gz
+appImage:
+  artifactName: "OMP-Desktop-${arch}.${ext}"
+win:
+  artifactName: "OMP-Desktop-Setup-${version}-${arch}.${ext}"
+  icon: assets/icon.ico
+  extraResources:
+    - from: ../../bin/omp-windows-${arch}.exe
+      to: bin/omp.exe
+    - from: assets/icon.png
+      to: icon.png
+    - from: assets/icon.ico
+      to: icon.ico
+    - from: bin/omp-desktop.cmd
+      to: bin/omp-desktop.cmd
+  target:
+    - nsis
+    - zip
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true

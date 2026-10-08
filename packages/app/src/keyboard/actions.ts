@@ -1,0 +1,54 @@
+export type KeyboardFocusScope =
+  | "terminal"
+  | "message-input"
+  | "command-center"
+  | "editable"
+  | "other";
+
+export type MessageInputKeyboardActionKind = "focus" | "send" | "mode-cycle";
+
+export type KeyboardActionId =
+  | "agent.interrupt"
+  | "agent.new"
+  | "workspace.tab.menu.open"
+  | "workspace.tab.target.agent"
+  | "workspace.tab.target.changes"
+  | "workspace.tab.target.files"
+  | "workspace.tab.close.current"
+  | "workspace.tab.navigate.index"
+  | "workspace.tab.navigate.relative"
+  | "workspace.pane.split.right"
+  | "workspace.pane.split.down"
+  | "workspace.pane.focus.left"
+  | "workspace.pane.focus.right"
+  | "workspace.pane.focus.up"
+  | "workspace.pane.focus.down"
+  | "workspace.pane.move-tab.left"
+  | "workspace.pane.move-tab.right"
+  | "workspace.pane.move-tab.up"
+  | "workspace.pane.move-tab.down"
+  | "workspace.pane.close"
+  | "workspace.explorer.maximize.toggle"
+  | "workspace.navigate.index"
+  | "workspace.navigate.relative"
+  | "sidebar.toggle.left"
+  | "sidebar.toggle.right"
+  | "sidebar.toggle.both"
+  | "settings.toggle"
+  | "command-center.toggle"
+  | "command-center.files"
+  | "shortcuts.dialog.toggle"
+  | "workspace.terminal.new"
+  | "workspace.new"
+  | "workspace.project.pick"
+  | "workspace.archive"
+  | "workspace.pin"
+  | "view.toggle.focus"
+  | "theme.cycle"
+  | "message-input.action";
+
+export type KeyboardShortcutPayload =
+  | { index: number }
+  | { delta: 1 | -1 }
+  | { kind: MessageInputKeyboardActionKind }
+  | null;
